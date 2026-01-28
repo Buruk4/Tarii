@@ -1,23 +1,25 @@
-const express = require('express');
+const express = require("express");
 const {
   getDailyMarkings,
   getDailyMarking,
   createDailyMarking,
   updateDailyMarking,
   deleteDailyMarking,
-} = require('../controllers/dailyMarking');
+} = require("../controllers/dailyMarking");
+
+const { protect } = require("../middleware/auth");
 
 const router = express.Router();
 
 router
-  .route('/')
-  .get(getDailyMarkings)
-  .post(createDailyMarking);
+  .route("/")
+  .get(protect, getDailyMarkings)
+  .post(protect, createDailyMarking);
 
 router
-  .route('/:id')
-  .get(getDailyMarking)
-  .put(updateDailyMarking)
-  .delete(deleteDailyMarking);
+  .route("/:id")
+  .get(protect, getDailyMarking)
+  .put(protect, updateDailyMarking)
+  .delete(protect, deleteDailyMarking);
 
 module.exports = router;

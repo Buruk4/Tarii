@@ -1,12 +1,16 @@
-const DailyMarking = require('../models/DailyMarking');
+const DailyMarking = require("../models/DailyMarking");
 
 // @desc      Get all daily markings
 // @route     GET /api/v1/dailymarkings
 // @access    Private
 exports.getDailyMarkings = async (req, res, next) => {
   try {
-    const dailyMarkings = await DailyMarking.find({ user: req.user.id });
-    res.status(200).json({ success: true, count: dailyMarkings.length, data: dailyMarkings });
+    const dailyMarkings = await DailyMarking.find({ user: req.user._id });
+    res.status(200).json({
+      success: true,
+      count: dailyMarkings.length,
+      data: dailyMarkings,
+    });
   } catch (err) {
     res.status(400).json({ success: false, message: err.message });
   }
@@ -20,12 +24,17 @@ exports.getDailyMarking = async (req, res, next) => {
     const dailyMarking = await DailyMarking.findById(req.params.id);
 
     if (!dailyMarking) {
-      return res.status(404).json({ success: false, message: 'Daily marking not found' });
+      return res
+        .status(404)
+        .json({ success: false, message: "Daily marking not found" });
     }
 
     // Make sure user is daily marking owner
     if (dailyMarking.user.toString() !== req.user.id) {
-      return res.status(401).json({ success: false, message: 'Not authorized to access this daily marking' });
+      return res.status(401).json({
+        success: false,
+        message: "Not authorized to access this daily marking",
+      });
     }
 
     res.status(200).json({ success: true, data: dailyMarking });
@@ -55,18 +64,27 @@ exports.updateDailyMarking = async (req, res, next) => {
     let dailyMarking = await DailyMarking.findById(req.params.id);
 
     if (!dailyMarking) {
-      return res.status(404).json({ success: false, message: 'Daily marking not found' });
+      return res
+        .status(404)
+        .json({ success: false, message: "Daily marking not found" });
     }
 
     // Make sure user is daily marking owner
     if (dailyMarking.user.toString() !== req.user.id) {
-        return res.status(401).json({ success: false, message: 'Not authorized to update this daily marking' });
+      return res.status(401).json({
+        success: false,
+        message: "Not authorized to update this daily marking",
+      });
     }
 
-    dailyMarking = await DailyMarking.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-      runValidators: true,
-    });
+    dailyMarking = await DailyMarking.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      {
+        new: true,
+        runValidators: true,
+      },
+    );
 
     res.status(200).json({ success: true, data: dailyMarking });
   } catch (err) {
@@ -82,12 +100,17 @@ exports.deleteDailyMarking = async (req, res, next) => {
     const dailyMarking = await DailyMarking.findById(req.params.id);
 
     if (!dailyMarking) {
-      return res.status(404).json({ success: false, message: 'Daily marking not found' });
+      return res
+        .status(404)
+        .json({ success: false, message: "Daily marking not found" });
     }
 
     // Make sure user is daily marking owner
     if (dailyMarking.user.toString() !== req.user.id) {
-        return res.status(401).json({ success: false, message: 'Not authorized to delete this daily marking' });
+      return res.status(401).json({
+        success: false,
+        message: "Not authorized to delete this daily marking",
+      });
     }
 
     await dailyMarking.remove();
