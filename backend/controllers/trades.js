@@ -1,5 +1,5 @@
-const Trade = require('../models/Trade');
-const DailyMarking = require('../models/DailyMarking');
+const Trade = require("../models/Trade");
+const DailyMarking = require("../models/DailyMarking");
 
 // @desc      Get all trades
 // @route     GET /api/v1/trades
@@ -33,17 +33,22 @@ exports.getTrades = async (req, res, next) => {
 exports.getTrade = async (req, res, next) => {
   try {
     const trade = await Trade.findById(req.params.id).populate({
-      path: 'dailyMarking',
-      select: 'date bias',
+      path: "dailyMarking",
+      select: "date bias",
     });
 
     if (!trade) {
-      return res.status(404).json({ success: false, message: 'Trade not found' });
+      return res
+        .status(404)
+        .json({ success: false, message: "Trade not found" });
     }
 
     // Make sure user is trade owner
     if (trade.user.toString() !== req.user.id) {
-        return res.status(401).json({ success: false, message: 'Not authorized to access this trade' });
+      return res.status(401).json({
+        success: false,
+        message: "Not authorized to access this trade",
+      });
     }
 
     res.status(200).json({
@@ -66,12 +71,17 @@ exports.createTrade = async (req, res, next) => {
     const dailyMarking = await DailyMarking.findById(req.params.dailyMarkingId);
 
     if (!dailyMarking) {
-      return res.status(404).json({ success: false, message: 'Daily marking not found' });
+      return res
+        .status(404)
+        .json({ success: false, message: "Daily marking not found" });
     }
 
     // Make sure user is daily marking owner
     if (dailyMarking.user.toString() !== req.user.id) {
-        return res.status(401).json({ success: false, message: 'Not authorized to add a trade to this daily marking' });
+      return res.status(401).json({
+        success: false,
+        message: "Not authorized to add a trade to this daily marking",
+      });
     }
 
     const trade = await Trade.create(req.body);
@@ -93,12 +103,17 @@ exports.updateTrade = async (req, res, next) => {
     let trade = await Trade.findById(req.params.id);
 
     if (!trade) {
-      return res.status(404).json({ success: false, message: 'Trade not found' });
+      return res
+        .status(404)
+        .json({ success: false, message: "Trade not found" });
     }
 
     // Make sure user is trade owner
     if (trade.user.toString() !== req.user.id) {
-        return res.status(401).json({ success: false, message: 'Not authorized to update this trade' });
+      return res.status(401).json({
+        success: false,
+        message: "Not authorized to update this trade",
+      });
     }
 
     trade = await Trade.findByIdAndUpdate(req.params.id, req.body, {
@@ -118,26 +133,39 @@ exports.updateTrade = async (req, res, next) => {
 // @desc      Delete trade
 // @route     DELETE /api/v1/trades/:id
 // @access    Private
+
 exports.deleteTrade = async (req, res, next) => {
   try {
     const trade = await Trade.findById(req.params.id);
 
     if (!trade) {
-      return res.status(404).json({ success: false, message: 'Trade not found' });
+      return res.status(404).json({
+        success: false,
+        message: "Trade not found",
+      });
     }
 
-    // Make sure user is trade owner
+    // Check if the authenticated user owns this trade
     if (trade.user.toString() !== req.user.id) {
-        return res.status(401).json({ success: false, message: 'Not authorized to delete this trade' });
+      return res.status(403).json({
+        success: false,
+        message: "You are not authorized to delete this trade",
+      });
     }
 
-    await trade.remove();
+    await trade.deleteOne(); // slightly better than remove() in modern Mongoose
 
     res.status(200).json({
       success: true,
+      message: "Trade successfully deleted",
       data: {},
     });
   } catch (err) {
-    res.status(400).json({ success: false, message: err.message });
+    console.error(err);
+    res.status(500).json({
+      success: false,
+      message: "Server error while deleting trade",
+      error: err.message,
+    });
   }
 };

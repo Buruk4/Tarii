@@ -1,9 +1,9 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const DailyMarkingSchema = new mongoose.Schema({
   user: {
     type: mongoose.Schema.ObjectId,
-    ref: 'User',
+    ref: "User",
     required: true,
   },
   date: {
@@ -12,17 +12,17 @@ const DailyMarkingSchema = new mongoose.Schema({
   },
   bias: {
     type: String,
-    enum: ['Buy', 'Sell', 'Range'],
+    enum: ["Buy", "Sell", "Range"],
     required: true,
   },
   liquidityTarget: {
     type: String,
-    enum: ['Buy-side', 'Sell-side'],
+    enum: ["Buy-side", "Sell-side"],
     required: true,
   },
   session: {
     type: String,
-    enum: ['London', 'New York'],
+    enum: ["London", "New York", "Asian"],
     required: true,
   },
   keyLevels: {
@@ -33,7 +33,7 @@ const DailyMarkingSchema = new mongoose.Schema({
   },
   modelPlanned: {
     type: String,
-    enum: ['2022 Model', 'Liquidity Sweep + MSS', 'Other'],
+    enum: ["2022 Model", "Liquidity Sweep + MSS", "Other"],
     required: true,
   },
   notes: {
@@ -48,4 +48,4 @@ const DailyMarkingSchema = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model('DailyMarking', DailyMarkingSchema);
+module.exports = mongoose.model("DailyMarking", DailyMarkingSchema);

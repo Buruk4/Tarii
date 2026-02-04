@@ -1,25 +1,23 @@
-const express = require('express');
+const express = require("express");
 const {
   getTrades,
   getTrade,
   createTrade,
   updateTrade,
   deleteTrade,
-} = require('../controllers/trades');
+} = require("../controllers/trades");
 
 const router = express.Router({ mergeParams: true });
 
-const { protect } = require('../middleware/auth');
+const { protect } = require("../middleware/auth");
 
-router
-  .route('/')
-  .get(protect, getTrades)
-  .post(protect, createTrade);
+// Get all trades for a daily marking
+router.route("/").get(protect, getTrades);
+router.route("/").post(protect, createTrade);
 
-router
-  .route('/:id')
-  .get(protect, getTrade)
-  .put(protect, updateTrade)
-  .delete(protect, deleteTrade);
+// Get, update, delete a single trade
+router.route("/:id").get(protect, getTrade);
+router.route("/:id").put(protect, updateTrade);
+router.route("/:id").delete(protect, deleteTrade);
 
 module.exports = router;

@@ -63,6 +63,8 @@ exports.updateDailyMarking = async (req, res, next) => {
   try {
     let dailyMarking = await DailyMarking.findById(req.params.id);
 
+    console.log(dailyMarking);
+
     if (!dailyMarking) {
       return res
         .status(404)
@@ -97,25 +99,21 @@ exports.updateDailyMarking = async (req, res, next) => {
 // @access    Private
 exports.deleteDailyMarking = async (req, res, next) => {
   try {
-    const dailyMarking = await DailyMarking.findById(req.params.id);
+    const dailyMarking = await DailyMarking.findOneAndDelete({
+      _id: req.params.id,
+      user: req.user.id,
+    });
 
     if (!dailyMarking) {
-      return res
-        .status(404)
-        .json({ success: false, message: "Daily marking not found" });
-    }
-
-    // Make sure user is daily marking owner
-    if (dailyMarking.user.toString() !== req.user.id) {
-      return res.status(401).json({
+      return res.status(404).json({
         success: false,
-        message: "Not authorized to delete this daily marking",
+        message: "Daily marking not found or not authorized",
       });
     }
-
-    await dailyMarking.remove();
-
-    res.status(200).json({ success: true, data: {} });
+    res.status(200).json({
+      success: true,
+      message: "Daily marking  deleted",
+    });
   } catch (err) {
     res.status(400).json({ success: false, message: err.message });
   }

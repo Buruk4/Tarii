@@ -20,7 +20,7 @@ app.use(cors());
 // Mount routers
 app.use("/api/v1/auth", require("./routes/auth"));
 app.use("/api/v1/dailymarkings", require("./routes/dailyMarking"));
-app.use("/api/v1/trades", require("./routes/trades"));
+
 app.use("/api/v1/stats", require("./routes/stats"));
 app.use("/api/v1/dashboard", require("./routes/dashboard"));
 
