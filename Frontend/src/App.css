@@ -1,42 +1,328 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+/*
+---
+- A clean, modern, and responsive design suitable for a financial/trading application.
+- A dark theme, which is common in trading interfaces to reduce eye strain.
+- A clear visual hierarchy, with important information highlighted.
+- Interactive elements with clear feedback (hover, active, disabled states).
+- A flexible layout that can accommodate various components and data visualizations.
+- Custom scrollbars that fit the dark theme.
+- A color-coded system for profit and loss, a key feature for a trading journal.
+- A responsive design that works on different screen sizes.
+
+This CSS file is structured with the following sections:
+1.  **Root Variables**: Defines the color palette, fonts, and other global variables. This makes it easy to customize the theme.
+2.  **Dark Theme**: Contains the dark mode color variables.
+3.  **Base Styles**: Basic styles for the body, typography, and scrollbars.
+4.  **Layout**: Styles for the main application layout, including the sidebar and main content area.
+5.  **Navbar**: Styles for the top navigation bar.
+6.  **Dashboard**: Styles for the dashboard cards and statistics.
+7.  **Trade Entry Forms**: Styles for form elements like inputs, buttons, and file uploads.
+8.  **Trade List / Table**: Styles for tables and lists of trades.
+9.  **Charts & Visualizations**: Styles for chart containers.
+10. **Interactions & Effects**: Styles for interactive elements like buttons and modals.
+11. **Responsive Design**: Media queries to ensure the application looks good on different screen sizes.
+---
+*/
+
+/* 1. Root Variables */
+:root {
+  --primary-color: #007bff;
+  --secondary-color: #6c757d;
+  --success-color: #28a745;
+  --danger-color: #dc3545;
+  --warning-color: #ffc107;
+  --info-color: #17a2b8;
+  --light-color: #f8f9fa;
+  --dark-color: #343a40;
+  --background-color: #ffffff;
+  --text-color: #212529;
+  --font-family: 'Roboto', sans-serif;
+}
+
+/* 2. Dark Theme */
+[data-theme='dark'] {
+  --background-color: #1a1a1a;
+  --text-color: #f8f9fa;
+  --primary-color: #007bff;
+  --secondary-color: #6c757d;
+  --success-color: #28a745;
+  --danger-color: #dc3545;
+  --warning-color: #ffc107;
+  --info-color: #17a2b8;
+  --light-color: #343a40;
+  --dark-color: #f8f9fa;
+}
+
+/* 3. Base Styles */
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+  font-family: var(--font-family);
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--background-color);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--secondary-color);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-color);
+}
+
+/* 4. Layout */
+.app-layout {
+  display: flex;
+}
+
+.sidebar {
+  width: 250px;
+  background-color: var(--light-color);
+  padding: 20px;
+  height: 100vh;
+  position: fixed;
+  left: 0;
+  top: 0;
+  transition: width 0.3s ease;
+}
+
+.sidebar-nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar-nav li a {
+  display: block;
+  padding: 10px 15px;
+  color: var(--text-color);
+  text-decoration: none;
+  border-radius: 5px;
+  margin-bottom: 5px;
+}
+
+.sidebar-nav li a:hover,
+.sidebar-nav li a.active {
+  background-color: var(--primary-color);
+  color: var(--light-color);
+}
+
+.main-content {
+  margin-left: 250px;
+  padding: 20px;
+  width: calc(100% - 250px);
+  transition: margin-left 0.3s ease;
+}
+
+/* 5. Navbar */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: var(--light-color);
+  border-bottom: 1px solid var(--secondary-color);
+}
+
+.navbar-profile .profile-pic {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.navbar-profile .username {
+  font-weight: bold;
+}
+
+/* 6. Dashboard */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.dashboard-card {
+  background-color: var(--light-color);
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.dashboard-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.dashboard-card h3 {
+  margin-top: 0;
+  font-size: 1.2em;
+}
+
+.dashboard-card .stat {
+  font-size: 2em;
+  font-weight: bold;
+}
+
+/* 7. Trade Entry Forms */
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.form-control {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid var(--secondary-color);
+  border-radius: 5px;
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+.file-upload {
+  border: 2px dashed var(--secondary-color);
+  padding: 20px;
   text-align: center;
+  cursor: pointer;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.file-upload:hover {
+  border-color: var(--primary-color);
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
+.error-message {
+  color: var(--danger-color);
+  font-size: 0.9em;
+}
+
+/* 8. Trade List / Table */
+.trade-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.trade-table th,
+.trade-table td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid var(--secondary-color);
+}
+
+.trade-table thead th {
+  background-color: var(--light-color);
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.trade-table tbody tr:hover {
+  background-color: var(--secondary-color);
+}
+
+.profit {
+  color: var(--success-color);
+}
+
+.loss {
+  color: var(--danger-color);
+}
+
+/* 9. Charts & Visualizations */
+.chart-container {
+  background-color: var(--light-color);
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+}
+
+.tooltip {
+  background-color: var(--dark-color);
+  color: var(--light-color);
+  padding: 10px;
+  border-radius: 5px;
+  pointer-events: none;
+}
+
+/* 10. Interactions & Effects */
+.btn {
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+}
+
+.btn-primary {
+  background-color: var(--primary-color);
+  color: var(--light-color);
+}
+
+.btn-primary:hover {
+  opacity: 0.9;
+}
+
+.btn:disabled {
+  background-color: var(--secondary-color);
+  cursor: not-allowed;
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background-color: var(--light-color);
+  padding: 20px;
+  border-radius: 8px;
+  width: 500px;
+}
+
+/* 11. Responsive Design */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
   }
-  to {
-    transform: rotate(360deg);
+  .main-content {
+    margin-left: 0;
+    width: 100%;
   }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
+  .navbar {
+    flex-direction: column;
   }
-}
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
 }

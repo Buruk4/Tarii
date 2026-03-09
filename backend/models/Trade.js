@@ -1,14 +1,9 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const TradeSchema = new mongoose.Schema({
   user: {
     type: mongoose.Schema.ObjectId,
-    ref: 'User',
-    required: true,
-  },
-  dailyMarking: {
-    type: mongoose.Schema.ObjectId,
-    ref: 'DailyMarking',
+    ref: "User",
     required: true,
   },
   pair: {
@@ -17,7 +12,7 @@ const TradeSchema = new mongoose.Schema({
   },
   direction: {
     type: String,
-    enum: ['Buy', 'Sell'],
+    enum: ["Buy", "Sell"],
     required: true,
   },
   entry: {
@@ -42,7 +37,7 @@ const TradeSchema = new mongoose.Schema({
   },
   result: {
     type: String,
-    enum: ['Win', 'Loss', 'BE'],
+    enum: ["Win", "Loss", "BE"],
     required: true,
   },
   emotions: {
@@ -61,4 +56,4 @@ const TradeSchema = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model('Trade', TradeSchema);
+module.exports = mongoose.model("Trade", TradeSchema);

@@ -5,7 +5,7 @@ const dailyMarkingController = require("../controllers/dailyMarking");
 const { protect } = require("../middleware/auth");
 
 // routes/dailyMarking.js
-router.use("/:dailyMarkingId/trades", require("./trades"));
+// router.use("/:dailyMarkingId/trades", require("./trades"));
 
 // Get all & create
 router.get("/", protect, dailyMarkingController.getDailyMarkings);

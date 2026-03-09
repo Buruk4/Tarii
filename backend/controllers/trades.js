@@ -65,25 +65,33 @@ exports.getTrade = async (req, res, next) => {
 // @access    Private
 exports.createTrade = async (req, res, next) => {
   try {
-    req.body.dailyMarking = req.params.dailyMarkingId;
+    const tradeData = {
+      ...req.body,
+      user: req.user.id,
+    };
     req.body.user = req.user.id;
 
-    const dailyMarking = await DailyMarking.findById(req.params.dailyMarkingId);
+    const requiredFields = [
+      "pair",
+      "direction",
+      "entry",
+      "stopLoss",
+      "takeProfit",
+      "risk",
+      "rr",
+    ];
 
-    if (!dailyMarking) {
-      return res
-        .status(404)
-        .json({ success: false, message: "Daily marking not found" });
-    }
+    const missingField = requiredFields.filter(
+      (f) => tradeData[f] == undefined || tradeData[f] == "",
+    );
 
-    // Make sure user is daily marking owner
-    if (dailyMarking.user.toString() !== req.user.id) {
-      return res.status(401).json({
+    if (missingField.length > 0) {
+      return res.status(400).json({
         success: false,
-        message: "Not authorized to add a trade to this daily marking",
+        message: `Missing fields : ${missingField.join(", ")}`,
       });
     }
-
+    // Make sure user is daily marking owner
     const trade = await Trade.create(req.body);
 
     res.status(201).json({
